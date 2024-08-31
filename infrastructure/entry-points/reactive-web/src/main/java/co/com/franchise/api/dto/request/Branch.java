@@ -18,5 +18,4 @@ public class Branch {
     @JsonProperty("branchName")
     @JsonInclude(NON_NULL)
     String branchName;
-    List<Product> products;
 }

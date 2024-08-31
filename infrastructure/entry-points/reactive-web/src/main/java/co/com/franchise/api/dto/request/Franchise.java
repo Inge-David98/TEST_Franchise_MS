@@ -19,5 +19,4 @@ public class Franchise {
     @JsonProperty("franchiseName")
     @JsonInclude(NON_NULL)
     String franchiseName;
-    List<Branch> branches;
 }

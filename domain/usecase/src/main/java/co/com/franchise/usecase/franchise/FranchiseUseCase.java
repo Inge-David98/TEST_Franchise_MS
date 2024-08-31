@@ -25,4 +25,18 @@ public class FranchiseUseCase {
     public Mono<ResponseMessage> updateStock(String branchId, String productId, Long stock){
         return franquiciaRepository.updateStock(branchId,productId,stock);
     }
+
+    public Mono<ResponseProductoSucursal> getProductMostStock(String franchiseId){
+        return franquiciaRepository.getProductMostStock(franchiseId);
+    }
+
+    public Mono<ResponseMessage> updateNameFranchise(String name,String franchiseId){
+        return franquiciaRepository.updateNameFranchise(name,franchiseId);
+    }
+    public Mono<ResponseMessage> updateNameBranch(String name,String branchId){
+        return franquiciaRepository.updateNameBranch(name,branchId);
+    }
+    public Mono<ResponseMessage> updateNameProduct(String name,String productId){
+        return franquiciaRepository.updateNameProduct(name,productId);
+    }
 }

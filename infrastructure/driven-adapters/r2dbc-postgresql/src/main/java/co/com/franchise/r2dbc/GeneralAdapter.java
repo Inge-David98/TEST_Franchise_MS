@@ -2,8 +2,7 @@ package co.com.franchise.r2dbc;
 
 import co.com.franchise.model.franquicia.*;
 import co.com.franchise.model.franquicia.gateways.FranquiciaRepository;
-import co.com.franchise.r2dbc.dto.BranchData;
-import co.com.franchise.r2dbc.dto.BranchProductData;
+import co.com.franchise.r2dbc.dto.*;
 import co.com.franchise.r2dbc.mapper.MapperAdapter;
 import co.com.franchise.r2dbc.repository.BranchRepository;
 import co.com.franchise.r2dbc.repository.FranchiseRepository;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityOperations;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -86,6 +86,82 @@ public class GeneralAdapter implements FranquiciaRepository {
                 })
                 .onErrorResume(e -> Mono.just(ResponseMessage.builder().message("Error actualizando el stock: " + e.getMessage()).build()));
 
+    }
+
+    @Override
+    public Mono<ResponseProductoSucursal> getProductMostStock(String franchiseId) {
+        return franchiseRepository.findById(Long.valueOf(franchiseId))
+                .flatMapMany(franchise -> branchRepository.findByFranchiseId(franchise.getFranchiseId()))
+                .flatMap(branch -> productBranchRepository.findByBranchProduct(branch.getBranchId())
+                        .sort((bp1, bp2) -> Integer.compare(bp2.getStock().intValue(), bp1.getStock().intValue()))
+                        .next()
+                        .flatMap(branchProduct -> productRepository.findById(branchProduct.getBranch())
+                                .map(product -> ProductStock.builder()
+                                        .nombre(product.getName())
+                                        .sucursal(branch.getName())
+                                        .stock(branchProduct.getStock())
+                                        .build())))
+                .collectList().map(response -> MapperAdapter.MAPPER.responseToProductoStock(ResponseProductStock.builder()
+                                .products(response)
+                        .build()));
+
+    }
+
+    @Override
+    public Mono<ResponseMessage> updateNameFranchise(String name, String franchiseId) {
+        String sql = "UPDATE franchise SET name = $1 WHERE franchise_id = $2";
+        return r2dbcEntityOperations.getDatabaseClient()
+                .sql(sql)
+                .bind(0, name)
+                .bind(1, Long.valueOf(franchiseId))
+                .fetch()
+                .rowsUpdated()
+                .flatMap(rowsUpdated -> {
+                    if (rowsUpdated > 0) {
+                        return Mono.just(ResponseMessage.builder().message("Nombre de Franquicia actualizado correctamente").build());
+                    } else {
+                        return Mono.just(ResponseMessage.builder().message("No se encontró la franquicia para actualizar").build());
+                    }
+                })
+                .onErrorResume(e -> Mono.just(ResponseMessage.builder().message("Error actualizando el nombre de la franquicia: " + e.getMessage()).build()));
+    }
+
+    @Override
+    public Mono<ResponseMessage> updateNameBranch(String name, String branchId) {
+        String sql = "UPDATE branch SET name = $1 WHERE branch_id = $2";
+        return r2dbcEntityOperations.getDatabaseClient()
+                .sql(sql)
+                .bind(0, name)
+                .bind(1, Long.valueOf(branchId))
+                .fetch()
+                .rowsUpdated()
+                .flatMap(rowsUpdated -> {
+                    if (rowsUpdated > 0) {
+                        return Mono.just(ResponseMessage.builder().message("Nombre de la Sucursal actualizado correctamente").build());
+                    } else {
+                        return Mono.just(ResponseMessage.builder().message("No se encontró la Sucursal para actualizar").build());
+                    }
+                })
+                .onErrorResume(e -> Mono.just(ResponseMessage.builder().message("Error actualizando el nombre de la Sucursal: " + e.getMessage()).build()));
+    }
+
+    @Override
+    public Mono<ResponseMessage> updateNameProduct(String name, String productId) {
+        String sql = "UPDATE product SET name = $1 WHERE product_id = $2";
+        return r2dbcEntityOperations.getDatabaseClient()
+                .sql(sql)
+                .bind(0, name)
+                .bind(1, Long.valueOf(productId))
+                .fetch()
+                .rowsUpdated()
+                .flatMap(rowsUpdated -> {
+                    if (rowsUpdated > 0) {
+                        return Mono.just(ResponseMessage.builder().message("Nombre del Producto actualizado correctamente").build());
+                    } else {
+                        return Mono.just(ResponseMessage.builder().message("No se encontró el Producto para actualizar").build());
+                    }
+                })
+                .onErrorResume(e -> Mono.just(ResponseMessage.builder().message("Error actualizando el nombre del Producto: " + e.getMessage()).build()));
     }
 
 

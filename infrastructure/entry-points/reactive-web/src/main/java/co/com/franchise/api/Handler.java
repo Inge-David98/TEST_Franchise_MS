@@ -73,6 +73,37 @@ public class Handler extends GenericHandler{
     }
 
     public Mono<ServerResponse> getProductMostStock(ServerRequest serverRequest) {
-        return ServerResponse.ok().bodyValue("");
+        return Mono.defer(() -> {
+            String franchiseId = serverRequest.pathVariable(ID_FRANCHISE);
+            return franchiseUseCase.getProductMostStock(franchiseId);
+        }).flatMap(response -> buildResponse(serverRequest,HttpStatus.OK,GenericResponse.success(response)));
+    }
+
+    public Mono<ServerResponse> updateNameFranchise(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(Franchise.class)
+                .flatMap(franchise -> {
+                    String franchiseId = serverRequest.pathVariable(ID_FRANCHISE);
+                    return franchiseUseCase.updateNameFranchise(franchise.getFranchiseName(),franchiseId);
+                })
+                .flatMap(response -> buildResponse(serverRequest,HttpStatus.OK, GenericResponse.success(response)));
+
+    }
+    public Mono<ServerResponse> updateNameBranch(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(Branch.class)
+                .flatMap(branch -> {
+                    String branchId = serverRequest.pathVariable(ID_BRANCH);
+                    return franchiseUseCase.updateNameBranch(branch.getBranchName(),branchId);
+                })
+                .flatMap(response -> buildResponse(serverRequest,HttpStatus.OK, GenericResponse.success(response)));
+
+    }
+    public Mono<ServerResponse> updateNameProduct(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(Product.class)
+                .flatMap(product -> {
+                    String productId = serverRequest.pathVariable(ID_PRODUCT);
+                    return franchiseUseCase.updateNameProduct(product.getProductName(),productId);
+                })
+                .flatMap(response -> buildResponse(serverRequest,HttpStatus.OK, GenericResponse.success(response)));
+
     }
 }

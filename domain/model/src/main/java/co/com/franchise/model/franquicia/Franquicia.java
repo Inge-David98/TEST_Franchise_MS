@@ -8,5 +8,4 @@ import java.util.List;
 @Value
 public class Franquicia {
     String nombre;
-    List<Sucursal> sucursales;
 }

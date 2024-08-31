@@ -8,5 +8,9 @@ public interface FranquiciaRepository {
     Mono<ResponseSucursal> addBranch(Sucursal sucursal, String franchiseId);
     Mono<ResponseProducto> addProduct(Producto producto, String branchId);
     Mono<ResponseProducto> deleteProduct(String branchId, String productId);
-    Mono<ResponseMessage> updateStock(String branchId, String productId, Long stock);
+    Mono<ResponseMessage> updateStock(String franchiseId, String productId, Long stock);
+    Mono<ResponseProductoSucursal> getProductMostStock(String franchiseId);
+    Mono<ResponseMessage> updateNameFranchise(String name,String franchiseId);
+    Mono<ResponseMessage> updateNameBranch(String name,String branchId);
+    Mono<ResponseMessage> updateNameProduct(String name,String productId);
 }

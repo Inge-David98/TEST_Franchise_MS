@@ -18,6 +18,9 @@ public class RouterRest {
                 .andRoute(POST(Operation.ADD_PRODUCT.getPath()), handler::addProduct)
                 .andRoute(DELETE(Operation.DELETE_PRODUCT.getPath()), handler::deleteProduct)
                 .andRoute(PATCH(Operation.UPDATE_STOCK.getPath()), handler::updateStock)
-                .and(route(GET(Operation.GET_PRODUCT_MOST_STOCK.getPath()), handler::getProductMostStock));
+                .andRoute(GET(Operation.GET_PRODUCT_MOST_STOCK.getPath()), handler::getProductMostStock)
+                .andRoute(PATCH(Operation.UPDATE_NAME_FRANCHISIE.getPath()), handler::updateNameFranchise)
+                .andRoute(PATCH(Operation.UPDATE_NAME_BRANCH.getPath()), handler::updateNameBranch)
+                .and(route(PATCH(Operation.UPDATE_NAME_PRODUCT.getPath()), handler::updateNameProduct));
     }
 }

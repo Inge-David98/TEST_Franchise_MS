@@ -14,7 +14,6 @@ import org.mapstruct.factory.Mappers;
 public interface MapperRequest {
     MapperRequest MAPPER= Mappers.getMapper(MapperRequest.class);
     @Mapping(target = "nombre", source = "franchiseName")
-    @Mapping(target = "sucursales", source = "branches")
     Franquicia requestToFranquicia(Franchise franchise);
 
     @Mapping(target = "nombre", source = "branchName")
