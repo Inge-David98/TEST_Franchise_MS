@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public class FranchiseUseCase {
     private final FranquiciaRepository franquiciaRepository;
 
-    public Mono<ResponseFranquicia> addFranquise(Franquicia franquicia){
+    public Mono<ResponseFranquicia> addFranchise(Franquicia franquicia){
         return franquiciaRepository.addFranchise(franquicia);
     }
 

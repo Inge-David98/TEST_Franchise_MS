@@ -28,7 +28,7 @@ public class Handler extends GenericHandler{
 
     public Mono<ServerResponse> addFranchise(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Franchise.class)
-                .flatMap(franchise -> franchiseUseCase.addFranquise(MapperRequest.MAPPER.requestToFranquicia(franchise))
+                .flatMap(franchise -> franchiseUseCase.addFranchise(MapperRequest.MAPPER.requestToFranquicia(franchise))
                         .doOnSubscribe(suscription-> log.info("Request"+franchise)))
                 .flatMap(response -> buildResponse(serverRequest, HttpStatus.OK, GenericResponse.success(response)));
 

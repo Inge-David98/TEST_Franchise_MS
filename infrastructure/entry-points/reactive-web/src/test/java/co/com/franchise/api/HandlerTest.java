@@ -44,7 +44,7 @@ class HandlerTest {
 
     @Test
     void userHandlerTestSuccess() {
-        given(franchiseUseCase.addFranquise(any(Franquicia.class))).willReturn(
+        given(franchiseUseCase.addFranchise(any(Franquicia.class))).willReturn(
                 Mono.just(ResponseFranquicia.builder().build()));
 
         given(franchiseUseCase.addBranch(any(Sucursal.class),anyString())).willReturn(

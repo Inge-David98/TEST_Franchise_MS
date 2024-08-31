@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: "Franchise"
+    name: "Franchise_MS"
   devtools:
     add-properties: false
   h2:
@@ -12,6 +12,14 @@ spring:
   profiles:
     include: null
 management:
+  tracing:
+    sampling:
+      probability: 0.0
+    baggage:
+      correlation:
+        fields:
+          - messageId
+      remote-fields: messageId
   endpoints:
     web:
       exposure:
@@ -20,5 +28,10 @@ management:
     health:
       probes:
         enabled: true
-cors:
-  allowed-origins: "http://localhost:4200,http://localhost:8080"
+postgres:
+  user: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  host: "${DB_HOST}"
+  database: "${DB_NAME}"
+  port: "${DB_PORT}"
+  schema: "${SCHEMA}"

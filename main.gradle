@@ -37,6 +37,10 @@ subprojects {
         testCompileOnly  "org.projectlombok:lombok:${lombokVersion}"
         testAnnotationProcessor  "org.projectlombok:lombok:${lombokVersion}"
         implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        if (!project.name.equalsIgnoreCase(modelModule) && !project.name.equalsIgnoreCase(useCaseModule)) {
+            dependencies.add("implementation", "ch.qos.logback:logback-classic:${logbackVersion}")
+            dependencies.add("implementation", "net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}")
+        }
     }
 
     tasks.withType(Test).configureEach {
@@ -85,7 +89,10 @@ tasks.register('jacocoMergedReport', JacocoReport) {
     dependsOn = [test, subprojects.jacocoTestReport]
     additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories.setFrom files(subprojects.sourceSets.main.output)
+    classDirectories.setFrom files(subprojects.sourceSets.main.output).collect {
+        fileTree(dir: it,
+                exclude: ["co/com/franchise/**/MainApplication.class",'**/helper/**','**/config/**'])
+    }
     executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
     reports {
         xml.setRequired true

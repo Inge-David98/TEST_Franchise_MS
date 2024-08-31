@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostgresqlConnectionProperties {
-
     private String database;
     private String schema;
     private String username;
