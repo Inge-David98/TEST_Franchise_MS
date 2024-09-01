@@ -6,6 +6,7 @@ import io.r2dbc.pool.ConnectionPoolConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
 
+import io.r2dbc.postgresql.client.SSLMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +42,7 @@ public class PostgreSQLConnectionPool {
 				.schema(properties.getSchema())
 				.username(properties.getUsername())
 				.password(properties.getPassword())
+				.sslMode(SSLMode.REQUIRE)
 				.build();
 
         ConnectionPoolConfiguration poolConfiguration = ConnectionPoolConfiguration.builder()
