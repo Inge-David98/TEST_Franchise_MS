@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  franchise:
+    image: franchise:v1
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_USERNAME=xxxxxx
+      - DB_PASSWORD=xxxxxx
+      - DB_HOST=xxxxxx
+      - DB_PORT=xxxxxx
+      - DB_NAME=xxxxxx
+      - SCHEMA=xxxxxx
+      

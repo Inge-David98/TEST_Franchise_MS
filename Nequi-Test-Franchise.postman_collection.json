@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "32b7db7a-6ca5-4c07-9e00-cf23be698988",
+		"name": "Nequi-Test-Franchise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30630230"
+	},
+	"item": [
+		{
+			"name": "01- Crear Franquicia",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"franchiseName\": \"FRQ2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises"
+			},
+			"response": []
+		},
+		{
+			"name": "01- Crear Franquicia Cloud",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"franchiseName\": \"FRQ2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises"
+			},
+			"response": []
+		},
+		{
+			"name": "02- Crear Sucursal",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "12234",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"branchName\": \"SUCQ01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises/{{franchiseId}}/branches"
+			},
+			"response": []
+		},
+		{
+			"name": "03- Crear Producto",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "12344",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productName\": \"PDQ01\",\r\n  \"stock\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises/branches/{{branchId}}/products"
+			},
+			"response": []
+		},
+		{
+			"name": "04- Eliminar un Producto",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "123455",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:8080/api/franchises/branches/{{branchId}}/products/{{productId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "05- Actualizar Stock",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "12345",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/franchises/branches/{{branchId}}/products/{{productId}}/stock?value=25",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"franchises",
+						"branches",
+						"{{branchId}}",
+						"products",
+						"{{productId}}",
+						"stock"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "25"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06- Obtener Productos con Mayor Stock",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "123455",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:8080/api/franchises/{{franchiseId}}/branches/products/most-stock"
+			},
+			"response": []
+		},
+		{
+			"name": "07- Actualizar Nombre de Franquicia",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "123456",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"franchiseName\": \"FR05Ff\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises/{{franchiseId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "08- Actualizar Nombre de Sucursal",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "1223344",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"branchName\": \"SUC06\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises/branches/{{branchId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "09- Actualizar Nombre del producto",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "messageId",
+						"value": "1234455",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productName\": \"PD04\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/franchises/branches/products/{{productId}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "franchiseId",
+			"value": "6",
+			"type": "string"
+		},
+		{
+			"key": "branchId",
+			"value": "9",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "13",
+			"type": "string"
+		}
+	]
+}
