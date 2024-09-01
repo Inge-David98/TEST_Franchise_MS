@@ -67,12 +67,12 @@ Lista de las variables de entorno necesarias para configurar y levantar el servi
 
 ```bash
 # variables de entorno 
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=12345
-DB_NAME=prueba
-SCHEMA=public
+DB_HOST=xxxxx
+DB_PORT=xxxx
+DB_USERNAME=xxxxx
+DB_PASSWORD=xxxxxx
+DB_NAME=xxxxxx
+SCHEMA=xxxxxx
 ```
 ## RUTA DE ARCHIVOS SQL Y POSTMAN
 ```bash
@@ -106,7 +106,7 @@ Para desplegar esta solucion en cloud se necesitan los siguientes servicios de a
 8. Instancia RDS(Se encuentra desplegada en Nube con Terraform)
 
 _NOTA: Todos estos servicios en este caso los creamos con Terraform los cuales
-se encuentran en el siguiente REPO [IaC para TEST_Franchise_MS]()_
+se encuentran en el siguiente REPO [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)_
 
 
 
@@ -134,7 +134,7 @@ SUBIR IMAGEN A ECR
 docker push {URI_ECR}:latest
 ```
 
-## EXPLICACION DE LA IAC [IaC para TEST_Franchise_MS]()
+## EXPLICACION DE LA IAC [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)
 
 Esta IaC se hizo con la finalidad de entregar una solucion montada en Cloud, donde en realidad se creo un archivo
 main.tf, y alli se crearon todos los Scripts HCL que son necesarios para levantar el micro-servicio
