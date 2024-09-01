@@ -2,9 +2,9 @@
 
 ## Antes de Iniciar
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
+Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por ï¿½ltimo el inicio y configuraciï¿½n de la aplicaciï¿½n.
 
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+Lee el artï¿½culo [Clean Architecture ï¿½ Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
 
 # Arquitectura
 
@@ -12,11 +12,11 @@ Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/
 
 ## Domain
 
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
+Es el mï¿½dulo mï¿½s interno de la arquitectura, pertenece a la capa del dominio y encapsula la lï¿½gica y reglas del negocio mediante modelos y entidades del dominio.
 
 ## Usecases
 
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
+Este mï¿½dulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lï¿½gica de aplicaciï¿½n y reacciona a las invocaciones desde el mï¿½dulo de entry points, orquestando los flujos hacia el mï¿½dulo de entities.
 
 ## Infrastructure
 
@@ -24,9 +24,9 @@ Este módulo gradle perteneciente a la capa del dominio, implementa los casos de 
 
 En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
 
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
+Estas utilidades no estï¿½n arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
+genï¿½ricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
+basadas en el patrï¿½n de diseï¿½o [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
 
 Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
 
@@ -38,10 +38,111 @@ interactuar.
 
 ### Entry Points
 
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
+Los entry points representan los puntos de entrada de la aplicaciï¿½n o el inicio de los flujos de negocio.
 
 ## Application
 
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
+Este mï¿½dulo es el mï¿½s externo de la arquitectura, es el encargado de ensamblar los distintos mï¿½dulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automï¿½tica, inyectando en ï¿½stos instancias concretas de las dependencias declaradas. Ademï¿½s inicia la aplicaciï¿½n (es el ï¿½nico mï¿½dulo del proyecto donde encontraremos la funciï¿½n ï¿½public static void main(String[] args)ï¿½.
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+
+
+
+# Proyecto PRUEBA TECNICA de Franquicias
+
+## DescripciÃ³n
+Breve descripciÃ³n del servicio y su propÃ³sito.
+
+## Requisitos previos
+Lista de herramientas y tecnologÃ­as que se deben tener instaladas antes de poder levantar el servicio.
+
+- **Docker**: AsegÃºrate de tener Docker instalado. [GuÃ­a de instalaciÃ³n](https://docs.docker.com/get-docker/)
+- **Docker Compose**: AsegÃºrate de tener Docker Compose instalado. [GuÃ­a de instalaciÃ³n](https://docs.docker.com/compose/install/)
+- **Postman**: AsegÃºrate de tener Postman instalado. [GuÃ­a de instalaciÃ³n](https://www.postman.com/downloads/)
+- **Java 17**: AsegÃºrate de tener Java 17 instalado.
+- **CLI**: Asegurate de tener la cli de aws instalada y pues tambien una cuenta de aws todo esto con fines de despliegue en Cloud.
+
+## ConfiguraciÃ³n de variables de entorno
+Lista de las variables de entorno necesarias para configurar y levantar el servicio.
+
+```bash
+# variables de entorno 
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=12345
+DB_NAME=prueba
+SCHEMA=public
+```
+## RUTA DE ARCHIVOS SQL Y POSTMAN
+```bash
+  SQL para crear las tablas en la Base de datos
+
+    nombre del archivo: SQL_DB (Se encuentra en raiz)
+  
+  POSTMAN para crear las tablas en la Base de datos
+
+    nombre del archivo: Nequi-Test-Franchise.postman_collection (Se encuentra en raiz)
+```
+
+## DOCKERIZAR EL MICRO
+Para dockerizar y probar el funcionamiento de este micro a nivel local se creo un archivo docker-compose y dockerfile los cuales se encuentran en deployment
+esto con el fin de asignar las variables de entorno requeridas para la conexion a base de datos.
+```bash
+1 . TEST_Franchise_MS/deployment/docker-compose
+2 . TEST_Franchise_MS/deployment/Dockerfile
+```
+
+## DESPLIEGUE EN NUBE AWS
+Para desplegar esta solucion en cloud se necesitan los siguientes servicios de aws.
+
+1. Repositorio ECR
+2. VPC y Subnets
+3. Security Groups
+4. Application Load Balancer (ALB)
+5. Target Group
+6. ECS Cluster
+7. ECS Service
+8. Instancia RDS(Se encuentra desplegada en Nube con Terraform)
+
+_NOTA: Todos estos servicios en este caso los creamos con Terraform los cuales
+se encuentran en el siguiente REPO [IaC para TEST_Franchise_MS]()_
+
+
+
+Para realizar el cargue de la imagen de docker, se deben seguir los siguientes pasos
+
+## PASO 1
+```bash
+CONSTRUIR IMAGEN DOCKER
+
+docker build -f deployment/Dockerfile -t {URI_ECR}:latest .
+```
+## PASO 2
+
+```bash
+AUTENTICAR DOCKER CON ECR
+
+aws ecr get-login-password --region us-east-1 --profile dev-local | docker login --username AWS --password-stdin {URI_ECR}
+
+```
+## PASO 3
+
+```bash
+SUBIR IMAGEN A ECR
+
+docker push {URI_ECR}:latest
+```
+
+## EXPLICACION DE LA IAC [IaC para TEST_Franchise_MS]()
+
+Esta IaC se hizo con la finalidad de entregar una solucion montada en Cloud, donde en realidad se creo un archivo
+main.tf, y alli se crearon todos los Scripts HCL que son necesarios para levantar el micro-servicio
+
+_Nota: no se aplicaron inputs, tfvars, outputs, datas, locals y modules, loc cuales son herramientas de terraform, debido al tiempo de entrega de la solucion
+sin embargo cabe aclarar que aplicar todos estos conceptos en la IaC nos facilita la administracion de la creacion y despliegue de recursos
+seria una mejora a futuro para esta IaC_
+
+
+
+

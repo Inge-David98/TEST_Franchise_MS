@@ -1,7 +1,14 @@
+# Usa una imagen base de OpenJDK 17
 FROM eclipse-temurin:17-jdk-alpine
-VOLUME /tmp
-COPY *.jar Franchise.jar
-ENV JAVA_OPTS=" -Xshareclasses:name=cacheapp,cacheDir=/cache,nonfatal -XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
-# Replace with a non-root user to avoid running the container with excessive privileges
-USER appuser
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS  -jar Franchise.jar" ]
+
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copia el archivo JAR de la aplicación al contenedor
+COPY applications/app-service/build/libs/Franchise.jar /app/Franchise.jar
+
+# Expone el puerto en el que corre la aplicación
+EXPOSE 8080
+
+# Define el comando por defecto para correr la aplicación
+CMD ["java", "-jar", "/app/Franchise.jar"]
