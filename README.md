@@ -85,6 +85,12 @@ SCHEMA=xxxxxx
     nombre del archivo: Nequi-Test-Franchise.postman_collection (Se encuentra en raiz)
 ```
 
+## ESQUEMA DE BASE DE DATOS
+
+
+![Clean Architecture](Schema.png)
+
+
 ## DOCKERIZAR EL MICRO
 Para dockerizar y probar el funcionamiento de este micro a nivel local se creo un archivo docker-compose y dockerfile los cuales se encuentran en deployment
 esto con el fin de asignar las variables de entorno requeridas para la conexion a base de datos.
