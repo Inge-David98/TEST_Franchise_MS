@@ -51,7 +51,8 @@ Este m�dulo es el m�s externo de la arquitectura, es el encargado de ensambl
 # Proyecto PRUEBA TECNICA de Franquicias
 
 ## Descripción
-Breve descripción del servicio y su propósito.
+Este micro se implementa para manejar franquicias con sus debidas sucursales y tambien con los productos de las sucursales
+los cuales tienen su stock, se realiza de forma basica pero con toda la estructura necesaria para garantizar un buen flujo inicial y exitoso
 
 ## Requisitos previos
 Lista de herramientas y tecnologías que se deben tener instaladas antes de poder levantar el servicio.
