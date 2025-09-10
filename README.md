@@ -199,7 +199,7 @@ Para desplegar esta solución en cloud se necesitan los siguientes servicios de 
 7. ECS Service
 8. Instancia RDS (Se encuentra desplegada en Nube con Terraform)
 
-**NOTA:** Todos estos servicios se crean con Terraform en el repositorio [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)
+**NOTA:** Todos estos servicios se crean con Terraform en el repositorio [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/IaC_Modules)
 
 ### Pasos para despliegue en AWS:
 
@@ -224,7 +224,7 @@ Para desplegar esta solución en cloud se necesitan los siguientes servicios de 
 ## Infraestructura como Código (IaC)
 
 ### Repositorio de Terraform
-[IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)
+[IaC para TEST_Franchise_MS](https://github.com/Inge-David98/IaC_Modules)
 
 ### Recursos AWS creados:
 - Repositorio ECR para imágenes Docker
