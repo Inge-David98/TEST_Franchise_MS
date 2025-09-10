@@ -1,22 +1,71 @@
-# Proyecto Base Implementando Clean Architecture
+# Microservicio de Franquicias - Clean Architecture
 
-## Antes de Iniciar
+## Descripción
+Este microservicio implementa un sistema de gestión de franquicias con sus sucursales y productos, incluyendo manejo de stock. Está desarrollado siguiendo los principios de Clean Architecture.
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por �ltimo el inicio y configuraci�n de la aplicaci�n.
+## Guía de Inicio Rápido
 
-Lee el art�culo [Clean Architecture � Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+### 1. Clonar el repositorio
+```bash
+git clone <repository-url>
+cd TEST_Franchise_MS
+```
 
-# Arquitectura
+### 2. Configurar base de datos
+Ejecuta el script SQL para crear las tablas:
+```bash
+# El archivo SQL_DB.sql contiene las tablas necesarias
+psql -h <host> -U <username> -d <database> -f SQL_DB.sql
+```
+
+### 3. Ejecutar localmente
+
+#### Opción A: Con Docker (Recomendado)
+```bash
+# 1. Construir la aplicación
+./gradlew build
+
+# 2. Construir imagen Docker
+docker build -f deployment/Dockerfile -t franchise:v1 .
+
+# 3. Configurar variables en deployment/docker-compose.yml
+# 4. Ejecutar
+docker-compose -f deployment/docker-compose.yml up
+```
+
+#### Opción B: Directamente con Gradle
+```bash
+# Configurar variables de entorno y ejecutar
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_USERNAME=tu_usuario
+export DB_PASSWORD=tu_password
+export DB_NAME=tu_base_datos
+export SCHEMA=public
+
+./gradlew bootRun
+```
+
+### 4. Probar la API
+Importa la colección de Postman: `Nequi-Test-Franchise.postman_collection.json`
+
+La aplicación estará disponible en: http://localhost:8080
+
+---
+
+## Arquitectura del Proyecto
+
+Lee el artículo [Clean Architecture - Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
 
 ![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
 
 ## Domain
 
-Es el m�dulo m�s interno de la arquitectura, pertenece a la capa del dominio y encapsula la l�gica y reglas del negocio mediante modelos y entidades del dominio.
+Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
 
 ## Usecases
 
-Este m�dulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define l�gica de aplicaci�n y reacciona a las invocaciones desde el m�dulo de entry points, orquestando los flujos hacia el m�dulo de entities.
+Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
 
 ## Infrastructure
 
@@ -24,11 +73,11 @@ Este m�dulo gradle perteneciente a la capa del dominio, implementa los casos d
 
 En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
 
-Estas utilidades no est�n arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-gen�ricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patr�n de dise�o [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
+Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
+genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
+basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
 
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
+Estas clases no puede existir solas y debe heredarse su comportamiento en los **Driven Adapters**
 
 ### Driven Adapters
 
@@ -38,70 +87,108 @@ interactuar.
 
 ### Entry Points
 
-Los entry points representan los puntos de entrada de la aplicaci�n o el inicio de los flujos de negocio.
+Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
 
 ## Application
 
-Este m�dulo es el m�s externo de la arquitectura, es el encargado de ensamblar los distintos m�dulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma autom�tica, inyectando en �stos instancias concretas de las dependencias declaradas. Adem�s inicia la aplicaci�n (es el �nico m�dulo del proyecto donde encontraremos la funci�n �public static void main(String[] args)�.
+Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función public static void main(String[] args).
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
 
+---
 
+## Requisitos Previos
 
-# Proyecto PRUEBA TECNICA de Franquicias
+### Obligatorios
+- **Java 17**: [Descargar OpenJDK 17](https://adoptium.net/)
+- **PostgreSQL**: Base de datos (local o remota)
+- **Git**: Para clonar el repositorio
 
-## Descripción
-Este micro se implementa para manejar franquicias con sus debidas sucursales y tambien con los productos de las sucursales
-los cuales tienen su stock, se realiza de forma basica pero con toda la estructura necesaria para garantizar un buen flujo inicial y exitoso
+### Opcionales (pero recomendados)
+- **Docker & Docker Compose**: [Guía de instalación](https://docs.docker.com/get-docker/)
+- **Postman**: [Descargar](https://www.postman.com/downloads/) para probar la API
 
-## Requisitos previos
-Lista de herramientas y tecnologías que se deben tener instaladas antes de poder levantar el servicio.
+### Para despliegue en AWS
+- **AWS CLI**: [Guía de instalación](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- **Cuenta de AWS** con permisos para ECR, ECS, RDS
 
-- **Docker**: Asegúrate de tener Docker instalado. [Guía de instalación](https://docs.docker.com/get-docker/)
-- **Docker Compose**: Asegúrate de tener Docker Compose instalado. [Guía de instalación](https://docs.docker.com/compose/install/)
-- **Postman**: Asegúrate de tener Postman instalado. [Guía de instalación](https://www.postman.com/downloads/)
-- **Java 17**: Asegúrate de tener Java 17 instalado.
-- **CLI**: Asegurate de tener la cli de aws instalada y pues tambien una cuenta de aws todo esto con fines de despliegue en Cloud.
+## Variables de Entorno
 
-## Configuración de variables de entorno
-Lista de las variables de entorno necesarias para configurar y levantar el servicio.
-
+### Variables requeridas para la base de datos:
 ```bash
-# variables de entorno 
-DB_HOST=xxxxx
-DB_PORT=xxxx
-DB_USERNAME=xxxxx
-DB_PASSWORD=xxxxxx
-DB_NAME=xxxxxx
-SCHEMA=xxxxxx
-```
-## RUTA DE ARCHIVOS SQL Y POSTMAN
-```bash
-  SQL para crear las tablas en la Base de datos
-
-    nombre del archivo: SQL_DB (Se encuentra en raiz)
-  
-  POSTMAN para crear las tablas en la Base de datos
-
-    nombre del archivo: Nequi-Test-Franchise.postman_collection (Se encuentra en raiz)
+DB_HOST=localhost          # Host de la base de datos
+DB_PORT=5432              # Puerto de PostgreSQL (por defecto 5432)
+DB_USERNAME=tu_usuario    # Usuario de la base de datos
+DB_PASSWORD=tu_password   # Contraseña de la base de datos
+DB_NAME=franchise_db      # Nombre de la base de datos
+SCHEMA=public            # Esquema de la base de datos
 ```
 
-## ESQUEMA DE BASE DE DATOS
+### Configuración en diferentes entornos:
 
+#### Para Docker Compose:
+Edita el archivo `deployment/docker-compose.yml` con tus valores reales.
 
-![Clean Architecture](Schema.png)
-
-
-## DOCKERIZAR EL MICRO
-Para dockerizar y probar el funcionamiento de este micro a nivel local se creo un archivo docker-compose y dockerfile los cuales se encuentran en deployment
-esto con el fin de asignar las variables de entorno requeridas para la conexion a base de datos.
+#### Para ejecución local:
 ```bash
-1 . TEST_Franchise_MS/deployment/docker-compose
-2 . TEST_Franchise_MS/deployment/Dockerfile
+# Linux/Mac
+export DB_HOST=localhost
+export DB_PORT=5432
+# ... resto de variables
+
+# Windows
+set DB_HOST=localhost
+set DB_PORT=5432
+# ... resto de variables
 ```
 
-## DESPLIEGUE EN NUBE AWS
-Para desplegar esta solucion en cloud se necesitan los siguientes servicios de aws.
+## Archivos Importantes
+
+### Base de Datos
+- **SQL_DB.sql**: Script para crear las tablas necesarias (ubicado en la raíz del proyecto)
+- Ejecutar antes de iniciar la aplicación:
+  ```bash
+  psql -h <host> -U <username> -d <database> -f SQL_DB.sql
+  ```
+
+### Testing
+- **Nequi-Test-Franchise.postman_collection.json**: Colección de Postman con todos los endpoints
+- Importar en Postman para probar la API
+
+### Esquema de Base de Datos
+Ver archivo `Schema.png` para el diagrama ER completo.
+
+![Esquema de Base de Datos](Schema.png)
+
+## Ejecución con Docker
+
+### Pasos para ejecutar localmente:
+
+1. **Construir la aplicación:**
+   ```bash
+   ./gradlew build
+   ```
+
+2. **Construir imagen Docker:**
+   ```bash
+   docker build -f deployment/Dockerfile -t franchise:v1 .
+   ```
+
+3. **Configurar variables de entorno:**
+   Edita `deployment/docker-compose.yml` con tus credenciales de base de datos.
+
+4. **Ejecutar:**
+   ```bash
+   docker-compose -f deployment/docker-compose.yml up
+   ```
+
+### Archivos Docker:
+- `deployment/Dockerfile`: Configuración de la imagen
+- `deployment/docker-compose.yml`: Orquestación del servicio
+
+## Despliegue en AWS
+
+Para desplegar esta solución en cloud se necesitan los siguientes servicios de AWS:
 
 1. Repositorio ECR
 2. VPC y Subnets
@@ -110,46 +197,97 @@ Para desplegar esta solucion en cloud se necesitan los siguientes servicios de a
 5. Target Group
 6. ECS Cluster
 7. ECS Service
-8. Instancia RDS(Se encuentra desplegada en Nube con Terraform)
+8. Instancia RDS (Se encuentra desplegada en Nube con Terraform)
 
-_NOTA: Todos estos servicios en este caso los creamos con Terraform los cuales
-se encuentran en el siguiente REPO [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)_
+**NOTA:** Todos estos servicios se crean con Terraform en el repositorio [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)
 
+### Pasos para despliegue en AWS:
 
+1. **Construir imagen Docker:**
+   ```bash
+   ./gradlew build
+   docker build -f deployment/Dockerfile -t {URI_ECR}:latest .
+   ```
 
-Para realizar el cargue de la imagen de docker, se deben seguir los siguientes pasos
+2. **Autenticar Docker con ECR:**
+   ```bash
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {URI_ECR}
+   ```
 
-## PASO 1
-```bash
-CONSTRUIR IMAGEN DOCKER
+3. **Subir imagen a ECR:**
+   ```bash
+   docker push {URI_ECR}:latest
+   ```
 
-docker build -f deployment/Dockerfile -t {URI_ECR}:latest .
-```
-## PASO 2
+**Nota:** Reemplaza `{URI_ECR}` con la URI real de tu repositorio ECR.
 
-```bash
-AUTENTICAR DOCKER CON ECR
+## Infraestructura como Código (IaC)
 
-aws ecr get-login-password --region us-east-1 --profile dev-local | docker login --username AWS --password-stdin {URI_ECR}
+### Repositorio de Terraform
+[IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)
 
-```
-## PASO 3
+### Recursos AWS creados:
+- Repositorio ECR para imágenes Docker
+- VPC y Subnets para networking
+- Security Groups para seguridad
+- Application Load Balancer (ALB)
+- Target Groups
+- ECS Cluster y Service
+- Instancia RDS para PostgreSQL
 
-```bash
-SUBIR IMAGEN A ECR
+### Mejoras futuras:
+- Implementar módulos de Terraform
+- Usar variables (tfvars)
+- Agregar outputs
+- Implementar data sources y locals
 
-docker push {URI_ECR}:latest
-```
+---
 
-## EXPLICACION DE LA IAC [IaC para TEST_Franchise_MS](https://github.com/Inge-David98/Franchise_Base_IaC)
+## Solución de Problemas
 
-Esta IaC se hizo con la finalidad de entregar una solucion montada en Cloud, donde en realidad se creo un archivo
-main.tf, y alli se crearon todos los Scripts HCL que son necesarios para levantar el micro-servicio
+### Errores comunes:
 
-_Nota: no se aplicaron inputs, tfvars, outputs, datas, locals y modules, loc cuales son herramientas de terraform, debido al tiempo de entrega de la solucion
-sin embargo cabe aclarar que aplicar todos estos conceptos en la IaC nos facilita la administracion de la creacion y despliegue de recursos
-seria una mejora a futuro para esta IaC_
+1. **Error de conexión a base de datos:**
+   - Verificar que PostgreSQL esté ejecutándose
+   - Confirmar credenciales en variables de entorno
+   - Verificar conectividad de red
 
+2. **Puerto 8080 ocupado:**
+   ```bash
+   # Cambiar puerto en docker-compose.yml
+   ports:
+     - "8081:8080"  # Usar puerto 8081 localmente
+   ```
 
+3. **Error al construir con Gradle:**
+   ```bash
+   # Limpiar y reconstruir
+   ./gradlew clean build
+   ```
 
+4. **Problemas con permisos en gradlew:**
+   ```bash
+   chmod +x gradlew
+   ```
 
+## Endpoints Principales
+
+La aplicación expone los siguientes endpoints (ver colección de Postman para detalles):
+
+- **Franquicias**: CRUD de franquicias
+- **Sucursales**: CRUD de sucursales por franquicia
+- **Productos**: CRUD de productos
+- **Stock**: Gestión de inventario por sucursal
+
+## Contribución
+
+Para contribuir al proyecto:
+1. Fork del repositorio
+2. Crear rama feature
+3. Commit de cambios
+4. Push a la rama
+5. Crear Pull Request
+
+## Licencia
+
+Este proyecto es una prueba técnica para demostrar implementación de Clean Architecture con Spring Boot y PostgreSQL.
