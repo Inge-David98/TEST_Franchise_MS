@@ -77,7 +77,7 @@ class GeneralAdapterTest {
         Mono<ResponseFranquicia> responseFranquicia= generalAdapter.addFranchise(Franquicia.builder().nombre("FR01").build());
         StepVerifier.create(responseFranquicia)
                 .expectErrorMatches(e -> e instanceof RuntimeException &&
-                        e.getMessage().equals("Error creando Franquicia: Database error"))
+                        e.getMessage().equals("Error creando Franquicia"))
                 .verify();
     }
 
@@ -102,7 +102,7 @@ class GeneralAdapterTest {
         Mono<ResponseSucursal> responseBranch= generalAdapter.addBranch(Sucursal.builder().nombre("FR01").build(),"1");
         StepVerifier.create(responseBranch)
                 .expectErrorMatches(e -> e instanceof RuntimeException &&
-                        e.getMessage().equals("Error creando Sucursal: Database error"))
+                        e.getMessage().equals("Error creando Sucursal"))
                 .verify();
 
     }
@@ -129,7 +129,7 @@ class GeneralAdapterTest {
         Mono<ResponseProducto> responseProduct= generalAdapter.addProduct(Producto.builder().nombre("FR01").stock(8L).build(),"1");
         StepVerifier.create(responseProduct)
                 .expectErrorMatches(e -> e instanceof RuntimeException &&
-                        e.getMessage().equals("Error Agregando el producto: Database error"))
+                        e.getMessage().equals("Error Agregando el producto"))
                 .verify();
 
 
@@ -158,7 +158,7 @@ class GeneralAdapterTest {
         Mono<ResponseProducto> responseProduct= generalAdapter.deleteProduct("1","1");
         StepVerifier.create(responseProduct)
                 .expectErrorMatches(e -> e instanceof RuntimeException &&
-                        e.getMessage().equals("Error eliminando el producto: Database error"))
+                        e.getMessage().equals("Error eliminando el producto"))
                 .verify();
     }
 
@@ -225,7 +225,7 @@ class GeneralAdapterTest {
 
     @Test
     void updateNameProduct() {
-        when(r2dbcOperation.operationuUdateNameProduct(anyString(),anyString()))
+        when(r2dbcOperation.operationUpdateNameProduct(anyString(),anyString()))
                 .thenReturn(Mono.just(ResponseMessage.builder().message("actualizado").build()));
 
         Mono<ResponseMessage> responseMessage= generalAdapter.updateNameProduct("FR01","1");

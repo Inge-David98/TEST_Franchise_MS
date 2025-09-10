@@ -3,6 +3,9 @@ package co.com.franchise.api;
 import co.com.franchise.api.dto.request.Branch;
 import co.com.franchise.api.dto.request.Franchise;
 import co.com.franchise.api.dto.request.Product;
+import co.com.franchise.api.handlers.BranchHandler;
+import co.com.franchise.api.handlers.FranchiseHandler;
+import co.com.franchise.api.handlers.ProductHandler;
 import co.com.franchise.model.franquicia.*;
 import co.com.franchise.model.utils.Operation;
 import co.com.franchise.usecase.franchise.FranchiseUseCase;
@@ -26,7 +29,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest
-@ContextConfiguration(classes = {RouterRest.class, Handler.class})
+@ContextConfiguration(classes = {RouterRest.class, BranchHandler.class, FranchiseHandler.class, ProductHandler.class})
 class HandlerTest {
     @Autowired
     private ApplicationContext context;

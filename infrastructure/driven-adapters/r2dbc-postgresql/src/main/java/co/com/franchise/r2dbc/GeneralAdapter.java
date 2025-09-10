@@ -2,7 +2,10 @@ package co.com.franchise.r2dbc;
 
 import co.com.franchise.model.franquicia.*;
 import co.com.franchise.model.franquicia.gateways.FranquiciaRepository;
-import co.com.franchise.r2dbc.dto.*;
+import co.com.franchise.r2dbc.dto.BranchData;
+import co.com.franchise.r2dbc.dto.BranchProductData;
+import co.com.franchise.r2dbc.dto.ProductStock;
+import co.com.franchise.r2dbc.dto.ResponseProductStock;
 import co.com.franchise.r2dbc.helper.R2dbcOperation;
 import co.com.franchise.r2dbc.mapper.MapperAdapter;
 import co.com.franchise.r2dbc.repository.BranchRepository;
@@ -11,9 +14,7 @@ import co.com.franchise.r2dbc.repository.ProductBranchRepository;
 import co.com.franchise.r2dbc.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.r2dbc.core.R2dbcEntityOperations;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -32,16 +33,18 @@ public class GeneralAdapter implements FranquiciaRepository {
     public Mono<ResponseFranquicia> addFranchise(Franquicia franquicia) {
         return franchiseRepository.save(MapperAdapter.MAPPER.requestToFranchiseData(franquicia))
                 .map(MapperAdapter.MAPPER::requestToFranquicia)
-                .onErrorResume(e -> Mono.error(new RuntimeException("Error creando Franquicia: " + e.getMessage())));
+                .onErrorResume(e -> Mono.error(new RuntimeException("Error creando Franquicia", e)));
     }
 
     @Override
     public Mono<ResponseSucursal> addBranch(Sucursal sucursal, String franchiseId) {
-        return franchiseRepository.findById(Long.valueOf(franchiseId)).flatMap(franchiseData -> {
-            BranchData branchData = MapperAdapter.MAPPER.requestToBranchData(sucursal);
-            branchData.setFranchiseId(Long.valueOf(franchiseId));
-            return branchRepository.save(branchData).map(MapperAdapter.MAPPER::responseToSucursal);
-        }).onErrorResume(e -> Mono.error(new RuntimeException("Error creando Sucursal: " + e.getMessage())));
+        return franchiseRepository.findById(Long.valueOf(franchiseId))
+                .switchIfEmpty(Mono.error(new RuntimeException("Franquicia no encontrada")))
+                .flatMap(franchiseData -> {
+                    BranchData branchData = MapperAdapter.MAPPER.requestToBranchData(sucursal);
+                    branchData.setFranchiseId(franchiseData.getFranchiseId());
+                    return branchRepository.save(branchData).map(MapperAdapter.MAPPER::responseToSucursal);
+                }).onErrorResume(e -> Mono.error(new RuntimeException("Error creando Sucursal", e)));
     }
 
     @Override
@@ -53,7 +56,7 @@ public class GeneralAdapter implements FranquiciaRepository {
                             .build();
                     return productBranchRepository.save(branchProductData)
                             .map(response -> MapperAdapter.MAPPER.responseToProducto(response, productData.getName()));
-                }).onErrorResume(e -> Mono.error(new RuntimeException("Error Agregando el producto: " + e.getMessage())));
+                }).onErrorResume(e -> Mono.error(new RuntimeException("Error Agregando el producto", e)));
     }
 
     @Override
@@ -66,7 +69,7 @@ public class GeneralAdapter implements FranquiciaRepository {
                                         productRepository.deleteByProductId(productData.getProductId())
                                                 .thenReturn(MapperAdapter.MAPPER.responseToProducto(branchProductData, productData.getName()))
                                 )
-                ).onErrorResume(e -> Mono.error(new RuntimeException("Error eliminando el producto: " + e.getMessage())));
+                ).onErrorResume(e -> Mono.error(new RuntimeException("Error eliminando el producto", e)));
     }
 
     @Override
@@ -81,7 +84,7 @@ public class GeneralAdapter implements FranquiciaRepository {
                 .flatMap(branch -> productBranchRepository.findByBranchProduct(branch.getBranchId())
                         .sort((bp1, bp2) -> Integer.compare(bp2.getStock().intValue(), bp1.getStock().intValue()))
                         .next()
-                        .flatMap(branchProduct -> productRepository.findById(branchProduct.getBranch())
+                        .flatMap(branchProduct -> productRepository.findById(branchProduct.getProduct())
                                 .map(product -> ProductStock.builder()
                                         .nombre(product.getName())
                                         .sucursal(branch.getName())
@@ -105,8 +108,10 @@ public class GeneralAdapter implements FranquiciaRepository {
 
     @Override
     public Mono<ResponseMessage> updateNameProduct(String name, String productId) {
-       return r2dbcOperation.operationuUdateNameProduct(name,productId);
+       return r2dbcOperation.operationUpdateNameProduct(name,productId);
     }
+
+
 
 
 }

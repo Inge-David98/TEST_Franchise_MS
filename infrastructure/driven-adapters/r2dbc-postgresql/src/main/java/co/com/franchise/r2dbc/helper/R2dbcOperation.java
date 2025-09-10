@@ -68,7 +68,7 @@ public class R2dbcOperation {
                 .onErrorResume(e -> Mono.just(ResponseMessage.builder().message("Error actualizando el nombre de la Sucursal: " + e.getMessage()).build()));
     }
 
-    public Mono<ResponseMessage> operationuUdateNameProduct(String name, String productId){
+    public Mono<ResponseMessage> operationUpdateNameProduct(String name, String productId){
         String sql = "UPDATE product SET name = $1 WHERE product_id = $2";
         return r2dbcEntityOperations.getDatabaseClient()
                 .sql(sql)

@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class PropertiesParameters {
-    @Value("${postgres.database}")
+    @Value("${postgres.database:franchise_db}")
     private String database;
-    @Value("${postgres.schema}")
+    @Value("${postgres.schema:public}")
     private String schema;
-    @Value("${postgres.user}")
+    @Value("${postgres.user:postgres}")
     private String username;
-    @Value("${postgres.password}")
+    @Value("${postgres.password:password}")
     private String password;
-    @Value("${postgres.host}")
+    @Value("${postgres.host:localhost}")
     private String host;
-    @Value("${postgres.port}")
+    @Value("${postgres.port:5432}")
     private Integer port;
 
 }

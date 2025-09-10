@@ -10,4 +10,8 @@ dependencies {
 
     implementation "io.micrometer:micrometer-tracing:${micrometerTracingVersion}"
     implementation "io.micrometer:micrometer-tracing-bridge-brave:${micrometerTracingVersion}"
+
+    implementation "io.github.resilience4j:resilience4j-spring-boot2:${resilience4jVersion}"
+    implementation "io.github.resilience4j:resilience4j-reactor:${resilience4jVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }

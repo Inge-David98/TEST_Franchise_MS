@@ -19,4 +19,8 @@ public class GenericResponse<T> {
         return new GenericResponse<>(TechnicalMessage.SUCCESS.getExternalCode(),
                 TechnicalMessage.SUCCESS.getExternalMessage(), object);
     }
+
+    public static <T> GenericResponse<T> error(String code, String message) {
+        return new GenericResponse<>(code, message, null);
+    }
 }
